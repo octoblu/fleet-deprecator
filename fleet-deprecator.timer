@@ -9,4 +9,4 @@ OnUnitActiveSec=10 minutes
 WantedBy=timers.target
 
 [X-Fleet]
-X-ConditionMachineOf=fleet-deprecator.service
+Global=true

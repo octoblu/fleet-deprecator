@@ -15,3 +15,6 @@ ExecStart=/bin/sh -c 'echo "Checking memory available"; \
     /usr/bin/systemctl daemon-reload; \
     /usr/bin/systemctl restart fleet; \
   fi'
+  
+[X-Fleet]
+Global=true
