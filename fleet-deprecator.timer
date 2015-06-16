@@ -1,0 +1,12 @@
+[Unit]
+Description=Run fleet-deprecator.service every minute
+
+[Timer]
+OnBootSec=3 minutes
+OnUnitActiveSec=10 minutes
+
+[Install]
+WantedBy=timers.target
+
+[X-Fleet]
+X-ConditionMachineOf=fleet-deprecator.service

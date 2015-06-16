@@ -1,0 +1,17 @@
+[Unit]
+Description=Check RAM and change its metadata to mark it as unavailable
+Requires=docker.service
+
+[Service]
+Type=simple
+TimeoutStartSec=60
+ExecStart=/bin/sh -c 'echo "Checking memory available"; \
+  MEM_AVAILABLE=$(/usr/bin/cat /proc/meminfo | /usr/bin/grep "MemAvailable" | /usr/bin/awk "{print \$2}"); \
+  /usr/bin/echo $MEM_AVAILABLE; \
+  /usr/bin/expr $MEM_AVAILABLE "<" 1000000; \
+  if [ $? -eq 0 ]; then \
+    /usr/bin/echo "Out of memory, disabling self"; \
+    /usr/bin/echo "[Service]\nEnvironment=\"FLEET_METADATA=Role=unavailable\"" > /run/systemd/system/fleet.service.d/20-cloudinit.conf; \
+    /usr/bin/systemctl daemon-reload; \
+    /usr/bin/systemctl restart fleet; \
+  fi'
